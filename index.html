@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision Regret Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h1>🧠 Decision Regret Predictor</h1>
+        <p class="subtitle">AI-Based Psychological Decision Analysis</p>
+
+        <div class="form-group">
+            <input type="number" id="age" placeholder="Age (15-80)">
+            <input type="number" id="confidence" placeholder="Confidence Level (1-10)">
+            <input type="number" id="emotion" placeholder="Emotional Stability (1-10)">
+            <input type="number" id="pressure" placeholder="External Pressure (1-5)">
+            <input type="number" id="satisfaction" placeholder="Satisfaction Level (1-10)">
+        </div>
+
+        <button onclick="predict()">Predict Decision Outcome</button>
+
+        <div id="result" class="result-box"></div>
+    </div>
+</div>
+
+<script>
+function predict() {
+
+    const data = {
+        age: document.getElementById("age").value,
+        confidence: document.getElementById("confidence").value,
+        emotion: document.getElementById("emotion").value,
+        pressure: document.getElementById("pressure").value,
+        satisfaction: document.getElementById("satisfaction").value
+    };
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+
+        let resultBox = document.getElementById("result");
+
+        if(result.prediction === 1){
+            resultBox.innerHTML =
+                "⚠️ High Regret Risk<br>Probability: " + result.probability + "%";
+            resultBox.className = "result-box danger";
+        } else {
+            resultBox.innerHTML =
+                "✅ Low Regret Risk<br>Probability: " + result.probability + "%";
+            resultBox.className = "result-box success";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
