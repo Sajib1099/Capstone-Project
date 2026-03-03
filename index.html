@@ -1,64 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Decision Regret Predictor</title>
+    <title>Decision Insight AI</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <div class="card">
-        <h1>🧠 Decision Regret Predictor</h1>
-        <p class="subtitle">AI-Based Psychological Decision Analysis</p>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Decision Insight AI</div>
+    <a href="predict.html" class="nav-btn">Start Prediction</a>
+</nav>
 
-        <div class="form-group">
-            <input type="number" id="age" placeholder="Age (15-80)">
-            <input type="number" id="confidence" placeholder="Confidence Level (1-10)">
-            <input type="number" id="emotion" placeholder="Emotional Stability (1-10)">
-            <input type="number" id="pressure" placeholder="External Pressure (1-5)">
-            <input type="number" id="satisfaction" placeholder="Satisfaction Level (1-10)">
-        </div>
-
-        <button onclick="predictDecision()">Predict</button>
-
-        <div id="result" class="result-box"></div>
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Make Smarter Life Decisions</h1>
+        <p>
+            Our AI-powered system analyzes emotional and psychological factors 
+            to evaluate potential regret risk before or after important decisions.
+        </p>
+        <a href="predict.html" class="primary-btn">Analyze Decision</a>
     </div>
-</div>
+</section>
 
-<script>
-function predict() {
+<!-- FEATURES SECTION -->
+<section class="features">
 
-    const data = {
-        age: document.getElementById("age").value,
-        confidence: document.getElementById("confidence").value,
-        emotion: document.getElementById("emotion").value,
-        pressure: document.getElementById("pressure").value,
-        satisfaction: document.getElementById("satisfaction").value
-    };
+    <div class="feature-card">
+        <h3>AI-Based Analysis</h3>
+        <p>Uses a trained Machine Learning model to evaluate behavioral patterns.</p>
+    </div>
 
-    fetch("/predict", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
+    <div class="feature-card">
+        <h3>Psychological Factors</h3>
+        <p>Considers confidence, emotional stability, external pressure, and satisfaction.</p>
+    </div>
 
-        let resultBox = document.getElementById("result");
+    <div class="feature-card">
+        <h3>Instant Results</h3>
+        <p>Provides quick regret risk estimation with probability percentage.</p>
+    </div>
 
-        if(result.prediction === 1){
-            resultBox.innerHTML =
-                "⚠️ High Regret Risk<br>Probability: " + result.probability + "%";
-            resultBox.className = "result-box danger";
-        } else {
-            resultBox.innerHTML =
-                "✅ Low Regret Risk<br>Probability: " + result.probability + "%";
-            resultBox.className = "result-box success";
-        }
-    });
-}
-</script>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Decision Insight AI | Developed by Sajib Sarker</p>
+</footer>
 
 </body>
 </html>

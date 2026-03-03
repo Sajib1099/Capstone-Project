@@ -1,52 +1,83 @@
-function predictDecision() {
+// Wait until page fully loads
+document.addEventListener("DOMContentLoaded", function () {
 
-    // Get values from input fields
-    const age = document.getElementById("age").value;
-    const confidence = document.getElementById("confidence").value;
-    const emotion = document.getElementById("emotion").value;
-    const pressure = document.getElementById("pressure").value;
-    const satisfaction = document.getElementById("satisfaction").value;
+    const form = document.getElementById("predictionForm");
 
-    // Basic validation
-    if (!age || !confidence || !emotion || !pressure || !satisfaction) {
-        alert("Please fill all fields!");
-        return;
-    }
+    // Only run if form exists (important for multi-page setup)
+    if (!form) return;
 
-    const data = {
-        age: parseInt(age),
-        confidence: parseInt(confidence),
-        emotion: parseInt(emotion),
-        pressure: parseInt(pressure),
-        satisfaction: parseInt(satisfaction)
-    };
+    form.addEventListener("submit", function (event) {
 
-    // Send data to Flask backend
-    fetch("/predict", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(result => {
+        event.preventDefault();
 
-        const resultBox = document.getElementById("result");
+        const age = document.getElementById("age").value;
+        const confidence = document.getElementById("confidence").value;
+        const emotion = document.getElementById("emotion").value;
+        const pressure = document.getElementById("pressure").value;
+        const satisfaction = document.getElementById("satisfaction").value;
+        const resultDiv = document.getElementById("result");
 
-        if (result.prediction === 1) {
-            resultBox.innerHTML =
-                "⚠️ High Regret Risk <br> Probability: " + result.probability + "%";
-            resultBox.style.color = "red";
-        } else {
-            resultBox.innerHTML =
-                "✅ Low Regret Risk <br> Probability: " + result.probability + "%";
-            resultBox.style.color = "green";
+        // =============================
+        // 1️⃣ Validation Check
+        // =============================
+
+        if (!age || !confidence || !emotion || !pressure || !satisfaction) {
+            resultDiv.innerHTML = "⚠️ Please fill in all fields before prediction.";
+            resultDiv.style.color = "#f87171";
+            return;
         }
 
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("Something went wrong!");
+        if (age < 15 || age > 80) {
+            resultDiv.innerHTML = "⚠️ Age must be between 15 and 80.";
+            resultDiv.style.color = "#f87171";
+            return;
+        }
+
+        // =============================
+        // 2️⃣ Show Loading Effect
+        // =============================
+
+        resultDiv.innerHTML = "Analyzing decision data...";
+        resultDiv.style.color = "#38bdf8";
+
+        setTimeout(function () {
+
+            // Convert values to numbers
+            const c = parseInt(confidence);
+            const e = parseInt(emotion);
+            const p = parseInt(pressure);
+            const s = parseInt(satisfaction);
+
+            // =============================
+            // 3️⃣ Simple Prediction Logic
+            // (Temporary until Flask integration)
+            // =============================
+
+            let score = (c + e + s) - p;
+
+            // Calculate fake probability percentage
+            let probability = Math.min(Math.max((score * 10), 5), 95);
+
+            // =============================
+            // 4️⃣ Show Result
+            // =============================
+
+            if (score < 10) {
+                resultDiv.innerHTML = `
+                    ⚠️ <strong>High Regret Risk Detected</strong><br>
+                    Estimated Probability: ${probability}% 
+                `;
+                resultDiv.style.color = "#f87171";
+            } else {
+                resultDiv.innerHTML = `
+                    ✅ <strong>Low Regret Risk</strong><br>
+                    Estimated Probability: ${probability}% 
+                `;
+                resultDiv.style.color = "#4ade80";
+            }
+
+        }, 1200); // 1.2 second delay for professional effect
+
     });
-}
+
+});
