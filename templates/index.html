@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Decision Insight AI</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="logo">Decision Insight AI</div>
-   <a href="/predict-page" class="nav-btn">Start Prediction</a>
+    <a href="/predict-page" class="nav-btn">Start Prediction</a>
 </nav>
 
 <!-- HERO SECTION -->
@@ -17,10 +22,12 @@
     <div class="hero-content">
         <h1>Make Smarter Life Decisions</h1>
         <p>
-            Our AI-powered system analyzes emotional and psychological factors 
+            Our AI-powered system analyzes emotional and psychological factors
             to evaluate potential regret risk before or after important decisions.
         </p>
-        <a href="predict.html" class="primary-btn">Analyze Decision</a>
+
+        <!--  Correct Flask Link -->
+        <a href="/predict-page" class="primary-btn">Analyze Decision</a>
     </div>
 </section>
 
@@ -48,6 +55,9 @@
 <footer>
     <p>©️ 2026 Decision Insight AI | Developed by Sajib Sarker & MD Khairul Hasan Khan</p>
 </footer>
+
+<!-- JavaScript -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>
