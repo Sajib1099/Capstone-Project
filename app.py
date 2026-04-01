@@ -5,7 +5,7 @@ import numpy as np
 app = Flask(__name__)
 
 # Load your trained model
-model = pickle.load(open("model.pkl", "rb"))
+model = pickle.load(open("my_trained_model.pkl", "rb"))
 
 # Home page
 @app.route("/")

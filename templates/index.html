@@ -2,14 +2,14 @@
 <html>
 <head>
     <title>Decision Insight AI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="logo">Decision Insight AI</div>
-    <a href="predict.html" class="nav-btn">Start Prediction</a>
+   <a href="/predict-page" class="nav-btn">Start Prediction</a>
 </nav>
 
 <!-- HERO SECTION -->
