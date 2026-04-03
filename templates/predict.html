@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction | Decision Insight AI</title>
 
-    <!-- Flask CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -14,59 +13,68 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="logo">Decision Insight AI</div>
-
-    <!-- ✅ Flask route -->
     <a href="/" class="nav-btn">Home</a>
 </nav>
 
 <!-- FORM SECTION -->
 <div class="form-container">
 
-    <h2>Decision Regret Risk Analysis</h2>
+    <h2>🧠 Decision Regret Risk Analysis</h2>
+
     <p class="description">
-        Fill in the information below to analyze the likelihood of regretting a decision.
-        The system evaluates psychological and emotional factors to generate a prediction.
+        Answer the following questions based on a decision you have made or are planning to make.
+        This system will analyze your emotional and psychological state to estimate the likelihood of regret.
     </p>
 
     <form id="predictionForm">
 
-        <label>Age (15 - 80)</label>
+        <!-- AGE -->
+        <label>Age</label>
+        <small>Enter your current age (between 15 and 80)</small>
         <input type="number" id="age" min="15" max="80" required>
 
+        <!-- CONFIDENCE -->
         <label>Confidence Level</label>
+        <small>How confident were you when making this decision?</small>
         <select id="confidence" required>
-            <option value="">Select</option>
-            <option value="2">Low (1–3)</option>
-            <option value="5">Moderate (4–5)</option>
-            <option value="7">High Moderate (6–8)</option>
-            <option value="9">High (9–10)</option>
+            <option value="">Select your level</option>
+            <option value="2">Low (1–3): Unsure / Doubtful</option>
+            <option value="5">Moderate (4–5): Some confidence</option>
+            <option value="7">High Moderate (6–8): Mostly confident</option>
+            <option value="9">High (9–10): Very confident</option>
         </select>
 
+        <!-- EMOTION -->
         <label>Emotional Stability</label>
+        <small>How emotionally stable were you at that time?</small>
         <select id="emotion" required>
-            <option value="">Select</option>
-            <option value="2">Unstable</option>
-            <option value="5">Moderate</option>
-            <option value="8">Very Stable</option>
+            <option value="">Select your state</option>
+            <option value="2">Low: Stressed / Emotional</option>
+            <option value="5">Moderate: Balanced</option>
+            <option value="8">High: Calm & Stable</option>
         </select>
 
+        <!-- PRESSURE -->
         <label>External Pressure</label>
+        <small>Did others influence your decision?</small>
         <select id="pressure" required>
-            <option value="">Select</option>
-            <option value="1">Low</option>
-            <option value="3">Moderate</option>
-            <option value="5">High</option>
+            <option value="">Select pressure level</option>
+            <option value="1">Low: No pressure</option>
+            <option value="3">Moderate: Some influence</option>
+            <option value="5">High: Strong pressure</option>
         </select>
 
+        <!-- SATISFACTION -->
         <label>Satisfaction Level</label>
+        <small>How satisfied are you with the outcome?</small>
         <select id="satisfaction" required>
-            <option value="">Select</option>
-            <option value="2">Low</option>
+            <option value="">Select satisfaction</option>
+            <option value="2">Low: Not satisfied</option>
             <option value="5">Neutral</option>
-            <option value="8">High</option>
+            <option value="8">High: Very satisfied</option>
         </select>
 
-        <button type="submit">Run Analysis</button>
+        <button type="submit">🔍 Analyze Decision</button>
 
     </form>
 
@@ -75,7 +83,6 @@
 
 </div>
 
-<!-- Flask JS -->
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
