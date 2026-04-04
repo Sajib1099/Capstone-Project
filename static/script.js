@@ -1,50 +1,69 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.getElementById("predictionForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-    const form = document.getElementById("predictionForm");
+    // Get values from form
+    const age = document.getElementById("age").value;
+    const confidence = document.getElementById("confidence").value;
+    const emotion = document.getElementById("emotion").value;
+    const pressure = document.getElementById("pressure").value;
+    const satisfaction = document.getElementById("satisfaction").value;
 
-    if (!form) return;
+    const resultDiv = document.getElementById("result");
 
-    form.addEventListener("submit", async function (event) {
+    // Simple validation
+    if (!age || !confidence || !emotion || !pressure || !satisfaction) {
+        resultDiv.innerHTML = "⚠️ Please fill all fields correctly.";
+        return;
+    }
 
-        event.preventDefault();
+    // Send data to Flask
+    fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            age: parseInt(age),
+            confidence: parseInt(confidence),
+            emotion: parseInt(emotion),
+            pressure: parseInt(pressure),
+            satisfaction: parseInt(satisfaction)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
 
-        const data = {
-            age: document.getElementById("age").value,
-            confidence: document.getElementById("confidence").value,
-            emotion: document.getElementById("emotion").value,
-            pressure: document.getElementById("pressure").value,
-            satisfaction: document.getElementById("satisfaction").value
-        };
-
-        const resultDiv = document.getElementById("result");
-
-        resultDiv.innerHTML = "Analyzing...";
-        resultDiv.style.color = "#00f5ff";
-
-        try {
-            const response = await fetch("/predict", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (result.result === 1) {
-                resultDiv.innerHTML = "⚠️ High Regret Risk";
-                resultDiv.style.color = "red";
-            } else {
-                resultDiv.innerHTML = "✅ Low Regret Risk";
-                resultDiv.style.color = "green";
-            }
-
-        } catch (error) {
-            resultDiv.innerHTML = "❌ Error connecting to server";
-            resultDiv.style.color = "red";
+        // 🔥 Handle error from backend
+        if (data.error) {
+            resultDiv.innerHTML = "❌ Error: " + data.error;
+            return;
         }
 
-    });
+        // 🔥 Handle NaN problem safely
+        if (!data.probability || isNaN(data.probability)) {
+            resultDiv.innerHTML = "⚠️ Prediction failed. Please try again.";
+            return;
+        }
 
+        // Convert to percentage
+        const probability = (data.probability * 100).toFixed(2);
+
+        // Show result
+        if (data.result === 1) {
+            resultDiv.innerHTML = `
+                <h3>⚠️ High Regret Risk</h3>
+                <p>Probability: ${probability}%</p>
+            `;
+        } else {
+            resultDiv.innerHTML = `
+                <h3>✅ Low Regret Risk</h3>
+                <p>Probability: ${probability}%</p>
+            `;
+        }
+
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        resultDiv.innerHTML = "❌ Server error. Please try again.";
+    });
 });
