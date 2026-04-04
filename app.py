@@ -1,55 +1,63 @@
-from flask import Flask, render_template, request, jsonify
-import joblib
+from flask import Flask, request, jsonify, render_template
 import pandas as pd
+import joblib
 
-app = Flask(__name__)
+# ✅ STEP 1: Create app FIRST
+app = Flask(_name_)
 
-# Load model
+# ✅ STEP 2: Load model
 model = joblib.load("my_trained_model.pkl")
 
-# Home page
-@app.route("/")
+# ✅ HOME PAGE
+@app.route('/')
 def home():
     return render_template("index.html")
 
-# Prediction page
-@app.route("/predict-page")
+# ✅ PREDICT PAGE
+@app.route('/predict-page')
 def predict_page():
     return render_template("predict.html")
 
-# Prediction API
-@app.route("/predict", methods=["POST"])
+# ✅ PREDICTION API
+@app.route('/predict', methods=['POST'])
 def predict():
+    data = request.json
 
-    data = request.get_json()
+    try:
+        age = int(data['age'])
+        confidence = int(data['confidence'])
+        emotion = int(data['emotion'])
+        pressure = int(data['pressure'])
+        satisfaction = int(data['satisfaction'])
 
-    # Create input dictionary (same as training)
-    new_person = {
-        '1️⃣ Age': int(data["age"]),
-        '7️⃣ How confident were you when making this decision?': int(data["confidence"]),
-        '8️⃣ How emotionally stable were you at that time?': int(data["emotion"]),
-        '9️⃣ How much external pressure did you feel (family, society, friends)?': int(data["pressure"]),
-        '1️⃣2️⃣ How satisfied are you with the outcome of this decision?': int(data["satisfaction"])
-    }
+        # Create DataFrame
+        input_df = pd.DataFrame([{
+            '1️⃣ Age': age,
+            '7️⃣ How confident were you when making this decision?': confidence,
+            '8️⃣ How emotionally stable were you at that time?': emotion,
+            '9️⃣ How much external pressure did you feel (family, society, friends)?': pressure,
+            '1️⃣2️⃣ How satisfied are you with the outcome of this decision?': satisfaction
+        }])
 
-    # Convert to DataFrame
-    new_df = pd.DataFrame([new_person])
+        # Add missing columns
+        for col in model.feature_names_in_:
+            if col not in input_df.columns:
+                input_df[col] = 0
 
-    # Apply same preprocessing
-    new_df = pd.get_dummies(new_df)
+        # Match column order
+        input_df = input_df[model.feature_names_in_]
 
-    # 🔥 VERY IMPORTANT LINE (this fixes your main problem)
-    new_df = new_df.reindex(columns=model.feature_names_in_, fill_value=0)
+        prediction = model.predict(input_df)[0]
+        probability = model.predict_proba(input_df)[0][1]
 
-    # Prediction
-    prediction = model.predict(new_df)[0]
-    probability = model.predict_proba(new_df)[0][1]
+        return jsonify({
+            "result": int(prediction),
+            "probability": float(probability)
+        })
 
-    return jsonify({
-        "result": int(prediction),
-        "probability": float(probability)
-    })
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
-# Run app
-if __name__ == "__main__":
+# ✅ RUN APP
+if _name_ == '_main_':
     app.run(debug=True)
