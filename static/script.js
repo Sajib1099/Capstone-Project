@@ -1,7 +1,6 @@
 document.getElementById("predictionForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    // Get values from form
     const age = document.getElementById("age").value;
     const confidence = document.getElementById("confidence").value;
     const emotion = document.getElementById("emotion").value;
@@ -10,13 +9,13 @@ document.getElementById("predictionForm").addEventListener("submit", function(e)
 
     const resultDiv = document.getElementById("result");
 
-    // Simple validation
     if (!age || !confidence || !emotion || !pressure || !satisfaction) {
-        resultDiv.innerHTML = "⚠️ Please fill all fields correctly.";
+        resultDiv.innerHTML = "⚠️ Please fill all fields.";
         return;
     }
 
-    // Send data to Flask
+    resultDiv.innerHTML = "⏳ Analyzing...";
+
     fetch("/predict", {
         method: "POST",
         headers: {
@@ -30,40 +29,29 @@ document.getElementById("predictionForm").addEventListener("submit", function(e)
             satisfaction: parseInt(satisfaction)
         })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
 
-        // 🔥 Handle error from backend
         if (data.error) {
-            resultDiv.innerHTML = "❌ Error: " + data.error;
+            resultDiv.innerHTML = "❌ " + data.error;
             return;
         }
 
-        // 🔥 Handle NaN problem safely
         if (!data.probability || isNaN(data.probability)) {
-            resultDiv.innerHTML = "⚠️ Prediction failed. Please try again.";
+            resultDiv.innerHTML = "⚠️ Prediction failed.";
             return;
         }
 
-        // Convert to percentage
-        const probability = (data.probability * 100).toFixed(2);
+        const prob = (data.probability * 100).toFixed(2);
 
-        // Show result
         if (data.result === 1) {
-            resultDiv.innerHTML = `
-                <h3>⚠️ High Regret Risk</h3>
-                <p>Probability: ${probability}%</p>
-            `;
+            resultDiv.innerHTML = `⚠️ High Regret Risk (${prob}%)`;
         } else {
-            resultDiv.innerHTML = `
-                <h3>✅ Low Regret Risk</h3>
-                <p>Probability: ${probability}%</p>
-            `;
+            resultDiv.innerHTML = `✅ Low Regret Risk (${prob}%)`;
         }
 
     })
-    .catch(error => {
-        console.error("Error:", error);
-        resultDiv.innerHTML = "❌ Server error. Please try again.";
+    .catch(() => {
+        resultDiv.innerHTML = "❌ Server error.";
     });
 });

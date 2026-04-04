@@ -12,69 +12,77 @@
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">Decision Insight AI</div>
-    <a href="/" class="nav-btn">Home</a>
+    <div class="logo">🧠 Decision Insight AI</div>
+    <a href="/" class="nav-btn">🏠 Home</a>
 </nav>
 
-<!-- FORM SECTION -->
+<!-- FORM -->
 <div class="form-container">
 
-    <h2>🧠 Decision Regret Risk Analysis</h2>
-
+    <h2>🔍 Decision Analysis</h2>
     <p class="description">
-        Answer the following questions based on a decision you have made or are planning to make.
-        This system will analyze your emotional and psychological state to estimate the likelihood of regret.
+        Answer a few questions to predict if you might regret your decision.
     </p>
 
     <form id="predictionForm">
 
         <!-- AGE -->
-        <label>Age</label>
-        <small>Enter your current age (between 15 and 80)</small>
-        <input type="number" id="age" min="15" max="80" required>
+        <div class="input-group">
+            <label>🎂 Age</label>
+            <small>Enter your age (15–80)</small>
+            <input type="number" id="age" min="15" max="80" placeholder="e.g. 22" required>
+        </div>
 
         <!-- CONFIDENCE -->
-        <label>Confidence Level</label>
-        <small>How confident were you when making this decision?</small>
-        <select id="confidence" required>
-            <option value="">Select your level</option>
-            <option value="2">Low (1–3): Unsure / Doubtful</option>
-            <option value="5">Moderate (4–5): Some confidence</option>
-            <option value="7">High Moderate (6–8): Mostly confident</option>
-            <option value="9">High (9–10): Very confident</option>
-        </select>
+        <div class="input-group">
+            <label>💭 Confidence Level</label>
+            <small>How confident are you about this decision?</small>
+            <select id="confidence" required>
+                <option value="">Select level</option>
+                <option value="2">😕 Low Confidence</option>
+                <option value="5">🙂 Moderate Confidence</option>
+                <option value="7">😌 Mostly Confident</option>
+                <option value="9">😎 Very Confident</option>
+            </select>
+        </div>
 
         <!-- EMOTION -->
-        <label>Emotional Stability</label>
-        <small>How emotionally stable were you at that time?</small>
-        <select id="emotion" required>
-            <option value="">Select your state</option>
-            <option value="2">Low: Stressed / Emotional</option>
-            <option value="5">Moderate: Balanced</option>
-            <option value="8">High: Calm & Stable</option>
-        </select>
+        <div class="input-group">
+            <label>🧠 Emotional State</label>
+            <small>How emotionally stable do you feel right now?</small>
+            <select id="emotion" required>
+                <option value="">Select state</option>
+                <option value="2">😣 Stressed / Emotional</option>
+                <option value="5">🙂 Balanced</option>
+                <option value="8">😌 Calm & Stable</option>
+            </select>
+        </div>
 
         <!-- PRESSURE -->
-        <label>External Pressure</label>
-        <small>Did others influence your decision?</small>
-        <select id="pressure" required>
-            <option value="">Select pressure level</option>
-            <option value="1">Low: No pressure</option>
-            <option value="3">Moderate: Some influence</option>
-            <option value="5">High: Strong pressure</option>
-        </select>
+        <div class="input-group">
+            <label>👥 External Pressure</label>
+            <small>Are others influencing your decision?</small>
+            <select id="pressure" required>
+                <option value="">Select level</option>
+                <option value="1">🟢 No Pressure</option>
+                <option value="3">🟡 Some Pressure</option>
+                <option value="5">🔴 High Pressure</option>
+            </select>
+        </div>
 
-        <!-- SATISFACTION -->
-        <label>Satisfaction Level</label>
-        <small>How satisfied are you with the outcome?</small>
-        <select id="satisfaction" required>
-            <option value="">Select satisfaction</option>
-            <option value="2">Low: Not satisfied</option>
-            <option value="5">Neutral</option>
-            <option value="8">High: Very satisfied</option>
-        </select>
+        <!-- EXPECTED SATISFACTION -->
+        <div class="input-group">
+            <label>😊 Expected Satisfaction</label>
+            <small>How satisfied do you expect to feel after this decision?</small>
+            <select id="satisfaction" required>
+                <option value="">Select level</option>
+                <option value="2">😞 Low (Not satisfied)</option>
+                <option value="5">😐 Neutral</option>
+                <option value="8">😄 High (Very satisfied)</option>
+            </select>
+        </div>
 
-        <button type="submit">🔍 Analyze Decision</button>
+        <button type="submit">🚀 Analyze Decision</button>
 
     </form>
 
